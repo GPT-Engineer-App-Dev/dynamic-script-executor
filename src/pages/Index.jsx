@@ -39,7 +39,7 @@ const Index = () => {
 
   return (
     <Box p={4}>
-      <Input placeholder="Enter your prompt for GPT-4..." value={prompt} onChange={(e) => setPrompt(e.target.value)} size="lg" mb={4} />
+      <Textarea placeholder="Enter your prompt for GPT-4..." value={prompt} onChange={(e) => setPrompt(e.target.value)} size="lg" height="200px" mb={4} />
       <Button leftIcon={<FaArrowRight />} colorScheme="blue" onClick={handleSendToAI}>
         Send to AI
       </Button>
