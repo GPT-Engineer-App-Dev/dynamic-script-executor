@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Button, Input, Textarea, useToast } from "@chakra-ui/react";
-import { FaPlay } from "react-icons/fa";
+import { FaPlay, FaArrowRight } from "react-icons/fa";
+import { create } from "../../lib/openai";
 
 const Index = () => {
   const [code, setCode] = useState("");
   const toast = useToast();
+
+  const [prompt, setPrompt] = useState("");
+
+  const handleSendToAI = async () => {
+    const response = await create({ messages: [{ role: "user", content: prompt }], model: "gpt-4" });
+    setCode(response.choices[0].message.content);
+  };
 
   const handleExecuteCode = () => {
     try {
@@ -31,8 +39,12 @@ const Index = () => {
 
   return (
     <Box p={4}>
-      <Textarea placeholder="Write your JavaScript code here..." value={code} onChange={(e) => setCode(e.target.value)} size="lg" height="200px" mb={4} />
-      <Button leftIcon={<FaPlay />} colorScheme="teal" onClick={handleExecuteCode}>
+      <Input placeholder="Enter your prompt for GPT-4..." value={prompt} onChange={(e) => setPrompt(e.target.value)} size="lg" mb={4} />
+      <Button leftIcon={<FaArrowRight />} colorScheme="blue" onClick={handleSendToAI}>
+        Send to AI
+      </Button>
+      <Textarea placeholder="Write your JavaScript code here..." value={code} onChange={(e) => setCode(e.target.value)} size="lg" height="200px" mb={4} mt={4} />
+      <Button leftIcon={<FaPlay />} colorScheme="teal" onClick={handleExecuteCode} mt={2}>
         Execute Code
       </Button>
     </Box>
